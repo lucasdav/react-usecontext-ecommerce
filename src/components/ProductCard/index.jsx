@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import AddToCart from "../icons/AddToCart"
+import { useCartContext } from "../../context/CartContext"
 
 const StyledCard = styled.div`
     background-color: white;
@@ -28,16 +29,25 @@ const Price = styled.p`
 
 const AddToCardButton = styled.button`
     border: 1px solid #7A42AB;
-    background-color: transparent;
+    background-color: ${ props => props.disabled ? '#7A42AB' : 'transparent' };
     cursor: pointer;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px;
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 `
 
-const ProductCard = ({ product }) => {
+ ProductCard = ({ product }) => {
+
+    const { addToCart, isProductInCart } = useCartContext()
+
+    const isInCart = isProductInCart(product)
+
     return (
         <StyledCard>
             <img src={product.imageSrc} />
@@ -53,8 +63,8 @@ const ProductCard = ({ product }) => {
                         {product.color} {product.size}</p>
                     </li>
                     <li>
-                        <AddToCardButton>
-                            <AddToCart />
+                        <AddToCardButton disabled={isInCart} onClick={() => addToCart(product)}>
+                            <AddToCart highligth={isInCart}  />
                         </AddToCardButton>
                     </li>
                 </ul>

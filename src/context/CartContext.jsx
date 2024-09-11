@@ -33,8 +33,35 @@ export const CartProvider = ({ children }) => {
 
   const [products, setProducts] = useState(initialCartProducts)
 
+  const addToCart = (product) => {
+    setProducts((oldState) => {
+      const isProductInCart = oldState.some((p) => p.id === product.id)
+      if (!isProductInCart) {
+        return [...oldState, prod]
+      } else {
+        return oldState
+      }
+    })
+  }
+
+  const removeFromCart = (productId) => {
+    setProducts((oldState) => { 
+      return [...oldState.filter((p) => p.id !== productId)]
+    })
+  }
+
+  const getCartTotalValue = () => {
+    return (products.reduce((total, product) => {
+      total + product.price
+    }, 0)).toFixed(2)
+  }
+
+  const isProductInCart = (product) => {
+    return products.some((p) => p.id == product.id)
+  }
+
     return (
-        <CartContext.Provider value={{ products }}>
+        <CartContext.Provider value={{ products, addToCart, removeFromCart, getCartTotalValue, isProductInCart }}>
             {children}
         </CartContext.Provider>
     )

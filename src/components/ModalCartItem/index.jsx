@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { useCartContext } from "../../context/CartContext"
 
 const StyledItem = styled.div`
     display: flex;
@@ -31,6 +32,9 @@ const StyledItem = styled.div`
 `
 
 const ModalCartItem = ({ item }) => {
+
+    const { removeFromCart } = useCartContext()
+
     return (<StyledItem>
         <div>
             <img src={item.imageSrc} alt="" />
@@ -49,7 +53,7 @@ const ModalCartItem = ({ item }) => {
             </li>
         </ul>
         <div>
-            <button>
+            <button onClick={() => removeFromCart(item.id)}>
                 x remover
             </button>
         </div>
